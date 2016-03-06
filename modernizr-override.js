@@ -3,7 +3,6 @@
 *
 * Copyright (c)
 * Jon Egerton
-
 * MIT License
 */
 
@@ -19,8 +18,8 @@
 * For details of the Modernizr library, see: https://modernizr.com/
 */
 
-;(function (window, document, override) {
-        
+; (function (window, document, override) {
+
     /**
     * docElement is a convenience wrapper to grab the root element of the document
     *
@@ -44,7 +43,7 @@
     * @returns Modernizr: The populated instance of Modernizr
     */
     var Modernizr = window.Modernizr;
-	
+
     /**
     * enableClasses is a convenience wrapper to grab the enableClasses config from Modernizr
     *
@@ -52,7 +51,7 @@
     * @returns Modernizr: The populated instance of Modernizr
     */
     var enableClasses = Modernizr._config.enableClasses;
-	
+
     /**
     * updateModernizr updates the Modernizr object and updates the classes list
     *
@@ -61,10 +60,10 @@
     * @param {string[]} classes - Array of class names
     */
     function updateModernizr(classes) {
-            
+
         var oldClassName = null,
             newClassName = null;
-    
+
         //Loop on properties of override
         for (var prop in override) {
             if (override.hasOwnProperty(prop)) {
@@ -77,25 +76,25 @@
                         Modernizr[prop] = override[prop];
 
                         //Swap out the old class for the new
-						if (enableClasses) {
-							oldClassName = ((override[prop]) ? "no-" : "") + prop.toLowerCase();
-							newClassName = ((override[prop]) ? "" : "no-") + prop.toLowerCase();
-							classes.splice(classes.indexOf(oldClassName), 1, newClassName);
-						}
+                        if (enableClasses) {
+                            oldClassName = ((override[prop]) ? "no-" : "") + prop.toLowerCase();
+                            newClassName = ((override[prop]) ? "" : "no-") + prop.toLowerCase();
+                            classes.splice(classes.indexOf(oldClassName), 1, newClassName);
+                        }
                     };
                 } else {
                     //Add new Property
                     Modernizr[prop] = override[prop];
 
                     //Add to the classes
-					if (enableClasses) {
-						classes.push(((override[prop]) ? "" : "no-") + prop.toLowerCase());
-					}
+                    if (enableClasses) {
+                        classes.push(((override[prop]) ? "" : "no-") + prop.toLowerCase());
+                    }
                 }
             }
         }
     }
-    
+
     /**
     * setClasses takes an array of class names and adds them to the root element
     * Copied from the Modernizr source and tweaked to suit purpose
@@ -108,21 +107,21 @@
         var className = docElement.className;
         var classPrefix = Modernizr._config.classPrefix || '';
 
-		if (!enableClasses) return;
-			
+        if (!enableClasses) return;
+
         if (isSVG) {
-          className = className.baseVal;
+            className = className.baseVal;
         }
 
-		// Add the new classes
-		className = ' ' + classPrefix + classes.join(' ' + classPrefix);
-		isSVG ? docElement.className.baseVal = className : docElement.className = className;
+        // Add the new classes
+        className = classPrefix + classes.join(' ' + classPrefix);
+        isSVG ? docElement.className.baseVal = className : docElement.className = className;
     }
-  
+
     //Check there's anything to do
     if (override === undefined || override === null) return;
-    var classes = (enableClasses) ? docElement.className.split(" ") : [];	
+    var classes = (enableClasses) ? docElement.className.split(" ") : [];
     updateModernizr(classes);
     setClasses(classes);
-        
+
 })(window, document, window.ModernizrOverride);
